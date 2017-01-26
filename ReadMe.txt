@@ -22,12 +22,6 @@ en installant une interface (recommandé), TortoiseGit : https://tortoisegit.org/
 -- Pour créer un tag (photo du code à un moment t) : clique droit --> "git tag"
 
 
-DIFF OF WORD DOCUMENTS
-* download pandoc here : https://github.com/jgm/pandoc/releases/tag/1.19.1
-* install
-* now you can use diff for Word document
-
-
 ------------------------------------------------------------
 LOGS
 ------------------------------------------------------------
