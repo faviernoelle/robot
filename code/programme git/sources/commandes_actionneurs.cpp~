@@ -44,7 +44,7 @@ void rentrer_bras_coquillage_gauche ()
 
 void sortir_bras_coquillage_droit ()
 {
-	servo(2, 160);// a faire mettre la bon valeur d'angle
+	servo(2, 146);// a faire mettre la bon valeur d'angle
 }
 
 void rentrer_bras_coquillage_droit ()
@@ -69,59 +69,56 @@ void rentrer_les_bras_coquillage ()
 /***************************************************/
 void ouvrir_bras_poisson_gauche ()
 {
-cout<<"j ouvre ma pince gauche"<<endl;
-	servo(3, 120);// a faire mettre la bon valeur d'angle
+	servo(3, 0);// a faire mettre la bon valeur d'angle
 }
 
 void fermer_bras_poisson_gauche ()
 {
-	servo(3, 90);// a faire mettre la bon valeur d'angle
+	servo(3, 0);// a faire mettre la bon valeur d'angle
 }
 
 void ouvrir_bras_poisson_droit ()
 {
-cout<<"j ouvre ma pince droite"<<endl;
-	servo(4, 120);// a faire mettre la bon valeur d'angle
+	servo(4, 0);// a faire mettre la bon valeur d'angle
 }
 
 void fermer_bras_poisson_droit ()
 {
-	servo(4, 95);// a faire mettre la bon valeur d'angle
+	servo(4, 0);// a faire mettre la bon valeur d'angle
 }
 /***************************************************/
 void sortir_support_parasol ()
 {
-	servo(5, 70);// a faire mettre la bon valeur d'angle
+	servo(5, 0);// a faire mettre la bon valeur d'angle
 }
 
 void rentrer_support_parasol ()
 {
-	servo(5, 10);// a faire mettre la bon valeur d'angle
+	servo(5, 0);// a faire mettre la bon valeur d'angle
 }
 
 void fermer_parasol ()
 {
-	servo(6, 75);// a faire mettre la bon valeur d'angle
+	servo(6, 0);// a faire mettre la bon valeur d'angle
 }
 
 void ouvrir_parasol ()
 {
-	servo(6, 130);// a faire mettre la bon valeur d'angle
+	servo(6, 0);// a faire mettre la bon valeur d'angle
 }
 
 void funny_action ()
 {
 	sortir_support_parasol ();
-  	std::this_thread::sleep_for(std::chrono::milliseconds((int)(500)));
-	ouvrir_parasol ();
+  ouvrir_parasol ();
 }
 /***************************************************/
 void sortir_bras_poisson_gauche(int tab_capteurs[12])
 {
   //[3] capteur bras poisson bas
-/*  chrono::system_clock::time_point end;
+  chrono::system_clock::time_point end;
   end=chrono::system_clock::now();
-  end=end+chrono::seconds(1);*/
+  end=end+chrono::seconds(1);
       cout << "\n Je commence à sortir le bras à poisson gauche."<< endl;
   receptionserie(tab_capteurs);
   comMotBrasGauche(255);		// On commande le moteur tant qu'on est pas en but�e
@@ -182,7 +179,7 @@ void sortir_bras_poisson_droit(int tab_capteurs[12])
     std::this_thread::sleep_for(std::chrono::milliseconds((int)(20))); //Pause pour liberer thread avant de re-tester
 
   }
-  
+  std::this_thread::sleep_for(std::chrono::milliseconds(150));
   comMotBrasDroit(0);
 
   cout << "J'ai fini de sortir le bras à poisson droit."<< endl;
@@ -222,7 +219,7 @@ void rentrer_bras_poisson_droit_mi_course (int tab_capteurs[12])
       cout << "\n Je commence à rentrer le bras chargé de poissons."<< endl;
   receptionserie(tab_capteurs);
   comMotBrasDroit(-90);
-	this_thread::sleep_for(chrono::milliseconds(1500));
+	this_thread::sleep_for(chrono::seconds(1));
   comMotBrasDroit(0);
 
   cout << "J'ai les poissons suspendus à mon bras."<< endl;
@@ -245,7 +242,7 @@ void initialiser_actionneurs(int tab_capteurs[12])
 {
 	cout << "Initialisation des bras en cours."<< endl;
 
-//  rentrer_bras_poisson_gauche (tab_capteurs);
+  rentrer_bras_poisson_gauche (tab_capteurs);
 	rentrer_bras_poisson_droit (tab_capteurs);
   //fermer_bras_poisson_gauche ();
 	//fermer_bras_poisson_droit ();

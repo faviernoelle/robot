@@ -1,9 +1,3 @@
-//
-//  Created by Bassoch & Palmieri on 22/03/2016.
-//  Copyright (c) 2016. All rights reserved.
-//
-
-
 #include <iostream>
 #include <vector>
 #include <thread>
@@ -28,6 +22,20 @@ int cmd_moteur_droit=0;
 float erreurGauche=0;
 float erreurDroite=0;
 float erreurd_maitre_esclave=0;
+
+void ligneDroiteTest(float vitesseDemande)
+{
+
+  comMotDroit(vitesseDemande);
+  comMotGauche(vitesseDemande);
+
+  this_thread::sleep_for(chrono::milliseconds(2000));
+
+  comMotDroit(0);
+  comMotGauche(0);
+
+}
+
 
 void calculerAngleEtdistance(float tab_odometrie [],float xDesire,float yDesire,float* d,float* angle){
     float x=tab_odometrie[0],y=tab_odometrie[1];

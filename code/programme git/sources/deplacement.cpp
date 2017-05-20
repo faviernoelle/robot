@@ -22,7 +22,6 @@ using namespace std;
 #define conditionArretRotation 3
 #define Te 20
 const float R_Roue_codeuse=(5/2)*0.01;
-const float R_centre_roue=0.090;
 
 int cmd_moteur_gauche=0;
 int cmd_moteur_droit=0;
@@ -230,7 +229,7 @@ consigneVitesse=vitesseDemande;
 
         cmd_moteur_gauche=ceil(Kpg*erreurGauche+Kig*(somme_erreurs_gauche)+Kdg*variation_erreur_gauche);
 
-        cmd_moteur_droit=ceil(-cmd_moteur_gauche-(Kpd*erreurd_maitre_esclave+Kid*(somme_erreurs_maitre_esclave)+Kdd*variation_erreur_droite));
+        cmd_moteur_droit=ceil(-cmd_moteur_gauche-(Kpd*erreurd_maitre_esclave+Kid*(somme_erreurs_maitre_esclave)-Kdd*variation_erreur_droite));
 
         erreur_precedente[0]=erreurGauche;
         erreur_precedente[1]=erreurDroite;
@@ -259,188 +258,6 @@ consigneVitesse=vitesseDemande;
 
 
   }
-
-
-  //////////////////////////////////////////////////////////////////////////////////////
-
-// Fonction de rotation en boucle ouverte
-
-    void asserTourner2 (int vitesse, bool sens, int temps)
-    {
-      // vitesse de -256 à 255
-      // sens 0 ou 1
-      int vitesse1=0;
-      vitesse1=vitesse;
-
-  if (sens==0){
-    vitesse1=-vitesse1;
-  }
-
-        comMotDroit(vitesse1);
-        comMotGauche(-vitesse1);
-
-        this_thread::sleep_for(chrono::milliseconds(temps));
-
-      comMotDroit(0);
-      comMotGauche(0);
-
-
-    }
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Fonction d'asservissement en angle
-
-  void asserTourner3 (float angle_degre_consigne,float tab_odometrie [])
-  {
-    float angle_radian_consigne = angle_degre_consigne*(M_PI / 180) ;
-    float angle_radian_parcouru = 0 ;
-    float precision_angle_rad = 10.0 *(M_PI / 180) ; // en radian, précision désirée
-
-    float vitesse = 0 ; // consigne intermédiaire
-    int consigne_vitesse = 0 ; // valeur entre -256 et 255
-
-    float K = 255/180 ; // gain correcteur proportionel, pris pour accélération max dès 180°
-
-    extern eQEP eqep1;
-    extern eQEP eqep2;
-    eqep1.set_position(0);           //Raz des registres contenant les nombres d'increments
-    eqep2.set_position(0);
-
-    float orientation_initiale=tab_odometrie[2]; // orientation du robot au lancement de la fonction
-
-  // Asservissement en angle par correcteur proportionel
-
-    while(abs(angle_radian_consigne - angle_radian_parcouru)>precision_angle_rad)
-    {
-      // Récupértion des valeurs des angles
-            calculer_odometrie(tab_odometrie, Te);
-
-  // Calcul de l'angle parcouru depuis la dernière fois
-      angle_radian_parcouru = tab_odometrie[2]-orientation_initiale;
-
-  // Calcul de la consigne de vitesse
-      vitesse = K*(angle_radian_consigne - angle_radian_parcouru);
-
-      if (vitesse>255) vitesse=255;
-      if (vitesse<-255) vitesse=-255;
-
-  // Conversion en entier
-      consigne_vitesse = ceil(vitesse);
-      comMotDroit(consigne_vitesse);
-      comMotGauche(-consigne_vitesse);
-
-
-
-  this_thread::sleep_for(chrono::milliseconds(Te));
-
-    }
-
-  // Fin du mouvement
-    comMotDroit(0);
-    comMotGauche(0);
-
-  }
-
-
-  ////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Fonction avec vitesse fixée
-
-    void asserTourner4 (float angle_degre_consigne,float tab_odometrie [])
-    {
-      float angle_radian_consigne = angle_degre_consigne*(M_PI / 180) ;
-      float angle_radian_parcouru = 0 ;
-      float precision_angle_rad = 10.0 *(M_PI / 180) ; // en radian, précision désirée
-
-      float vitesse = 0 ; // consigne intermédiaire
-      int consigne_vitesse = 0 ; // valeur entre -256 et 255
-
-      extern eQEP eqep1;
-      extern eQEP eqep2;
-      eqep1.set_position(0);           //Raz des registres contenant les nombres d'increments
-      eqep2.set_position(0);
-
-      float orientation_initiale=tab_odometrie[2]; // orient
-
-    // Asservissement en angle par correcteur proportionel
-
-      while(abs(angle_radian_consigne - angle_radian_parcouru)>precision_angle_rad)
-      {
-        // Récupértion des valeurs des angles
-              calculer_odometrie(tab_odometrie, Te);
-
-  // Calcul de l'angle parcouru depuis la dernière fois
-        angle_radian_parcouru = tab_odometrie[2]-orientation_initiale;
-
-  // Calcul de la consigne de vitesse
-        vitesse = 100; // vitesse fixe à 40%  du max (=255)
-
-  // Conversion en entier
-        consigne_vitesse = ceil(vitesse);
-        comMotDroit(consigne_vitesse);
-        comMotGauche(-consigne_vitesse);
-
-
-
-  this_thread::sleep_for(chrono::milliseconds(Te));
-
-      }
-
-  // Fin du mouvement
-      comMotDroit(0);
-      comMotGauche(0);
-
-    }
-
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // Fonction avec vitesse fixée, le robot doit s'arrêter après avoir
-  // dépassé l'angle de consigne.
-  // RQ : consigne en degré uniquement positive
-      void asserTourner5 (float angle_degre_consigne,float tab_odometrie [])
-      {
-        float angle_radian_consigne = angle_degre_consigne*(M_PI / 180) ;
-        float angle_radian_parcouru = 0 ;
-        float precision_angle_rad = 10.0 *(M_PI / 180) ; // en radian, précision désirée
-
-        float vitesse = 0 ; // consigne intermédiaire
-        int consigne_vitesse = 0 ; // valeur entre -256 et 255
-
-        extern eQEP eqep1;
-        extern eQEP eqep2;
-        eqep1.set_position(0);           //Raz des registres contenant les nombres d'increments
-        eqep2.set_position(0);
-
-        float orientation_initiale=tab_odometrie[2]; // orient
-
-        // Rotation à une vitesse donnée
-
-        comMotDroit(100);
-        comMotGauche(-100);
-
-      // Asservissement en angle par correcteur proportionel
-
-        while(angle_radian_consigne > angle_radian_parcouru)
-        {
-          // Récupértion des valeurs des angles
-                calculer_odometrie(tab_odometrie, Te);
-
-    // Calcul de l'angle parcouru depuis la dernière fois
-          angle_radian_parcouru = tab_odometrie[2]-orientation_initiale;
-
-        }
-
-    // Fin du mouvement
-        comMotDroit(0);
-        comMotGauche(0);
-
-      }
-
-
-///////////////////////////////////////////////////////////////////////////////
 
 
   void deplacement_robot(float xDesire,float yDesire, int val_capteurs[],float tab_odometrie[],int vitesseNominal,int sens){

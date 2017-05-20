@@ -29,20 +29,19 @@ int main()
 
     while (valCapteur[7]==1) {
         receptionserie(valCapteur);
-
         //        debug:
         //        cout<<"capteur départ: "<<valCapteur[6]<<endl;
         //        this_thread::sleep_for(chrono::milliseconds(500));
     }
 
 
-    cout<<"début partie"<<endl;
-    
+    cout<<"début partie,tirette enlevée"<<endl;
+
     thread threadStrategie(strategie,valCapteur);
     this_thread::sleep_for(chrono::seconds(90));
     comMotDroit(0);
     comMotGauche(0);
-    funny_action();
+    funnyAction2017();
 
 
     return 0;

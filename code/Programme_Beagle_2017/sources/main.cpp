@@ -15,35 +15,37 @@
 #include "../headers/commandes_actionneurs.h"
 #include "../headers/strategie.h"
 
-
-
 using namespace std;
+
+
+
 
 int main()
 {
-
     int valCapteur[]={0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0};
-    //Initialisation
+
+    // Initialisation ///////////////////////////////////
     std::cout << protocole_com_serie_init() << std::endl;
     initialiser_actionneurs(valCapteur);
 
+    cout<<"Fin Initialisation"<<endl;
+
+    // Boucle de départ : tant que le fil bleu n'est pas tiré, on attend
+
     while (valCapteur[7]==1) {
         receptionserie(valCapteur);
-
-        //        debug:
-        //        cout<<"capteur départ: "<<valCapteur[6]<<endl;
-        //        this_thread::sleep_for(chrono::milliseconds(500));
     }
 
+    /////////////////////////////////////////////////////
+    cout<<"fil bleu tiré - stratégie lancée"<<endl;
 
-    cout<<"début partie"<<endl;
-    
     thread threadStrategie(strategie,valCapteur);
-    this_thread::sleep_for(chrono::seconds(90));
+    this_thread::sleep_for(chrono::seconds(90)); // Au bout de 90 sec. on arrete tout
     comMotDroit(0);
     comMotGauche(0);
-    funny_action();
-
+    
+    /////////////////////////////////////////////////////
+    funny_action(); // On lance la funny action
 
     return 0;
 }

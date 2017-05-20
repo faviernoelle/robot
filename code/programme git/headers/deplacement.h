@@ -14,15 +14,7 @@
 
 void calculerAngleEtdistance(float tab_odometrie [],float xDesire,float yDesire,float* d,float* angle);
 
-void asserTourner (float angleDemande, float vitesseDemande, int sens, float tab_odometrie[], int val_capteurs[]);
-
-void asserTourner2 (int vitesse, bool sens, int temps);
-
-void asserTourner3 (float angle_degre_consigne,float tab_odometrie []);
-
-void asserTourner4 (float angle_degre_consigne,float tab_odometrie []);
-
-void asserTourner5 (float angle_degre_consigne,float tab_odometrie []);
+void  asserTourner (float angleDemande, float vitesseDemande, int sens, float tab_odometrie[], int val_capteurs[]);
 
 void calculerAngleEtdistance(float tab_odometrie [],float xDesire,float yDesire,float* d,float* angle);
 

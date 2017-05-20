@@ -1,8 +1,3 @@
-/*
-//  Created by Bassoch & Palmieri on 22/03/2016.
-//  Copyright (c) 2016. All rights reserved.
-*/
-
 #include <mutex>
 #include "../headers/eqep.h"
 #include "../headers/calculer_odometrie.h"
@@ -15,12 +10,12 @@
 eQEP eqep1(eQEP1, eQEP::eQEP_Mode_Absolute, 1);
 eQEP eqep2(eQEP2, eQEP::eQEP_Mode_Absolute, 2);
 
-//Constantes et variables
+//Constantes et variables ///////////////////////////////////////////
 const float e=180.0;   //Ecartement des roues codeuses (en mm)
 const float N1=1823;  //Nombre d'incréments par tour des codeurs
 const float N2=1818;
 const float p1=0.0861423221; //Ajustes a la main. Pas du codeur 1, theoriquement p=0,034910948 mm/incrémement
-const float p2=0.08635254365; //Pas du codeur 2
+const float p2=0.08635254365;; //Pas du codeur 2
 float n1, n2;          //Nombre d'increments sur chacune des roues produits depuis la dernière lecture
 float dx, dy, dtheta, w1, w2, dtheta1, dtheta2;
 std::mutex mutProtectionEcriture;

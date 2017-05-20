@@ -63,7 +63,7 @@ bool comMotGauche(int val){
     return reussite;
 }
 
-bool comMotBrasDroit(int val){
+bool comPouPlaque(int val){
     bool reussite=false;
     unsigned char valeurenvoye;
     // adaptation de la valeur à envoyé
@@ -88,7 +88,7 @@ bool comMotBrasDroit(int val){
 }
 
 
-bool comMotBrasGauche(int val){
+bool comPouPince(int val){
     bool reussite=false;
     unsigned char valeurenvoye;
     // adaptation de la valeur à envoyé
